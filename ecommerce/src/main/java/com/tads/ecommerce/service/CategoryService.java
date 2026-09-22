@@ -3,6 +3,7 @@ package com.tads.ecommerce.service;
 import com.tads.ecommerce.dto.CategoryDTO;
 import com.tads.ecommerce.entity.Category;
 import com.tads.ecommerce.repository.CategoryRepository;
+import com.tads.ecommerce.service.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,7 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public CategoryDTO findById(Long id) {
         Optional<Category> obj = repository.findById(id);
-        Category entity = obj.get();
+        Category entity = obj.orElseThrow(()->new ResourceNotFoundException("Entity not Found!"));
 
         return new CategoryDTO(entity);
     }
